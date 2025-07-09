@@ -1,0 +1,4 @@
+venv
+.env
+geminiapi.txt
+ __pycache__/
