@@ -7,15 +7,15 @@ import os
 load_dotenv()
 genai.configure(api_key=os.getenv("Google_API_KEY"))
 
-# Page config
+# --- Page Configuration ---
 st.set_page_config(page_title="Gemini Chat", layout="centered")
-st.markdown("<h2 style='text-align: center; color: #00ffc8;'>💬 Gemini Chat Assistant</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; color: #00ffc8;'>💬 Chat Assistant</h2>", unsafe_allow_html=True)
 
-# Initialize chat history
+# --- Initialize Chat History ---
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# Custom CSS for Dark Theme and chat styling
+# --- Custom CSS for Dark Theme and Chat Styling ---
 st.markdown("""
     <style>
         body {
@@ -63,16 +63,16 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Chat container
+# --- Display Chat Messages ---
 st.markdown('<div class="chat-container">', unsafe_allow_html=True)
-for chat in reversed(st.session_state.chat_history):
+for chat in st.session_state.chat_history: # Removed reversed()
     if chat["role"] == "user":
         st.markdown(f"<div class='user-msg'>🧑‍💻 You: {chat['message']}</div>", unsafe_allow_html=True)
     else:
-        st.markdown(f"<div class='bot-msg'>🤖 Gemini: {chat['message']}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='bot-msg'>🤖 Chatbot: {chat['message']}</div>", unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Input handler
+# --- Input Handler Function ---
 def handle_input():
     user_input = st.session_state.user_input.strip()
     if user_input == "":
@@ -84,14 +84,14 @@ def handle_input():
 
         st.session_state.chat_history.append({"role": "user", "message": user_input})
         st.session_state.chat_history.append({"role": "gemini", "message": answer})
-        st.session_state.user_input = ""
+        st.session_state.user_input = "" # Clear the input box after sending
     except Exception as e:
         st.error(f"Error: {e}")
 
-# Input box
+# --- User Input Box ---
 st.text_input("Type your message and press Enter", key="user_input", on_change=handle_input)
 
-# Clear Chat button
+# --- Clear Chat Button ---
 if st.button("🗑️ Clear Chat"):
     st.session_state.chat_history = []
-    st.experimental_rerun()
+    st.rerun()
