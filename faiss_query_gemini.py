@@ -20,7 +20,7 @@ def load_db_query(query_text):
         Question: {input}
         """
     )
-    retriver=db.as_retriever(search_kwargs={"k": 5})
+    retriver=db.as_retriever(search_kwargs={"k": 7})
 
     document_chain = create_stuff_documents_chain(llm,prompt)
     retrival_chain = create_retrieval_chain(retriver,document_chain)
